@@ -3,4 +3,7 @@
 library(tidyverse)
 
 #load data
-data(iris)jhbhjt
+data(iris)
+
+# Hi!!!
+dim(iris)
