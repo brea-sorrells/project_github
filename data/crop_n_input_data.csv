@@ -1,0 +1,16 @@
+crop_type,min_bnf_rate,max_bnf_rate,uptake_unit,min_uptake,max_uptake
+wheat,0,0,lb N/bu,1.7,2.4
+rye ,0,0,lb N/bu,1.7,2.4
+oats,0,0,lb N/bu,1,1.3
+barley,0,0,lb N/bu,1.4,1.6
+soybean,0.066,0.066,lb N/bu,3.5,4
+triticale,0,0,lb N/bu,1.4,1.6
+sorghum,0,0,lb N/cwt,2,2.5
+corn,0,0,lb N/ton,10,12
+sorghum-sudangrass (hay),0.015,0.015,lb N/ton,45,55
+pearl millet (hay),0.015,0.015,lb N/ton,45,55
+bermudagrass (hay),0.015,0.015,lb N/ton,40,50
+tall fescue (hay),0.015,0.015,lb N/ton,40,50
+orchard grass (hay),0.015,0.015,lb N/ton,40,50
+timothy (hay),0.015,0.015,lb N/ton,40,50
+small grain (hay),0.015,0.015,lb N/ton,50,60
