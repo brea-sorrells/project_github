@@ -1,8 +1,9 @@
-phase,manure_produced_min,manure_produced_max,manure_n_content_min,manure_n_content_max
-Swine - Feeder to Finish,927,927,3.6,3.6
-Swine - Wean to Feeder,191,191,31.2,80.3
-Swine - Farrow to Finish,10478,10478,20.7,104.3
-Swine - Farrow to Wean,3203,3203,31.2,80.3
-Swine - Gilts,NA,NA,NA,NA
-Swine State COC,NA,NA,NA,NA
-Swine NPDES COC,NA,NA,NA,NA
+phase,manure_produced_gal_yr,manure_n_g_avg
+Swine - Feeder to Finish,927,3.6
+Swine - Wean to Feeder,191,3.6
+Swine - Farrow to Finish,10478,3.6
+Swine - Wean to Finish,776,3.6
+Swine - Farrow to Wean,3203,2.4
+Swine - Gilts,NA,NA
+Swine - Boar/Stud,5475,3.6
+Swine - Other ,NA,NA
