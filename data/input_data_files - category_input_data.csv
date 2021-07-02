@@ -1,0 +1,4 @@
+grouping,total_spray_days,min_uptake,max_uptake
+bermudagrass_rye,290,40,50
+corn_soybean_wheat,365,5.066666667,6.133333333
+tall_fescue,273,40,50
