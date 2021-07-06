@@ -123,13 +123,13 @@ wettable_acres <- wettable_acres %>%
          "n_up_tf_min_day" = n_up_lb_acre_min_tall_fescue/total_spray_days_tall_fescue)
 
 wettable_acres <- wettable_acres %>%
-  mutate("acres_spray_day" = manure_produced_gal_day/27514,
-         "acres_br_max_day" = n_produced_lbs_day/n_up_lb_acre_max_bermudagrass_rye,
-         "acres_br_min_day" = n_produced_lbs_day/n_up_lb_acre_min_bermudagrass_rye,
-         "acres_cws_max_day" = n_produced_lbs_day/n_up_lb_acre_max_corn_soybean_wheat,
-         "acres_cws_min_day" = n_produced_lbs_day/n_up_lb_acre_min_corn_soybean_wheat,
-         "acres_tf_max_day" = n_produced_lbs_day/n_up_lb_acre_max_tall_fescue,
-         "acres_tf_min_day" = n_produced_lbs_day/n_up_lb_acre_min_tall_fescue)
+  mutate("acres_spray_day" = manure_produced_gal_day/27154,
+         "acres_br_max_day" = n_produced_lbs_day/n_up_br_max_day,
+         "acres_br_min_day" = n_produced_lbs_day/n_up_br_min_day,
+         "acres_cws_max_day" = n_produced_lbs_day/n_up_cws_max_day,
+         "acres_cws_min_day" = n_produced_lbs_day/n_up_cws_min_day,
+         "acres_tf_max_day" = n_produced_lbs_day/n_up_tf_max_day,
+         "acres_tf_min_day" = n_produced_lbs_day/n_up_tf_min_day)
 
 how_many_acres <- wettable_acres[,-(13:32)]
 
@@ -141,6 +141,10 @@ for (i in 1:length(how_many_acres[, 1])){
   }
 }
 
+
+how_many_acres %>%
+  ggplot(aes(x = allowable_count, y = acres_br_max_day)) +
+  geom_point(aes(color = regulated_activity))
 
 
          
