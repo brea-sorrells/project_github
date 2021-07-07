@@ -16,7 +16,7 @@ cat <- read_csv("data/input_data_files - category_input_data.csv")
 
 # Manure Calcs ---------
 
-wettable_acres <- cafos[, -c(3, 7:8, 11, 14, 15:16, 20:30)]
+wettable_acres <- cafos#[, -c(3, 7:8, 11, 14, 15:16, 20:30)]
 
 
 wettable_acres$county <- tolower(wettable_acres$county)
@@ -131,20 +131,19 @@ wettable_acres <- wettable_acres %>%
          "acres_tf_max_day" = n_produced_lbs_day/n_up_tf_max_day,
          "acres_tf_min_day" = n_produced_lbs_day/n_up_tf_min_day)
 
-how_many_acres <- wettable_acres[,-(13:32)]
-
-for (i in 1:length(how_many_acres[, 1])){
-  for (j in 14:length(how_many_acres[1, ])) {
-    if (how_many_acres[i, 13] < how_many_acres[i, j]){
-      how_many_acres[i, j] <- how_many_acres[i, 13]
-    }
-  }
-}
+how_many_acres <- wettable_acres[, -c(31:51)]
+how_many_acres <- how_many_acres %>%
+  mutate("min_sprayable_acres" = NA,
+         "max_sprayable_acres" = NA)
 
 
-how_many_acres %>%
-  ggplot(aes(x = allowable_count, y = acres_br_max_day)) +
-  geom_point(aes(color = regulated_activity))
+ for (i in 1:length(how_many_acres$min_sprayable_acres)){
+    how_many_acres$min_sprayable_acres[i] <- min(how_many_acres[i, 31:36], na.rm = TRUE)
+    how_many_acres$max_sprayable_acres[i] <- max(how_many_acres[i, 31:36], na.rm = TRUE)
+   
+ }
 
+how_many_acres <- how_many_acres[, -c(31:36)]
 
+write_csv(how_many_acres, "wettable_acres_output.csv")
          
