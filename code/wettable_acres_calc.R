@@ -134,16 +134,18 @@ wettable_acres <- wettable_acres %>%
 how_many_acres <- wettable_acres[, -c(31:51)]
 how_many_acres <- how_many_acres %>%
   mutate("min_sprayable_acres" = NA,
-         "max_sprayable_acres" = NA)
+         "max_sprayable_acres" = NA,
+         "avg_sprayable_acres" = NA)
 
 
  for (i in 1:length(how_many_acres$min_sprayable_acres)){
     how_many_acres$min_sprayable_acres[i] <- min(how_many_acres[i, 31:36])
     how_many_acres$max_sprayable_acres[i] <- max(how_many_acres[i, 31:36])
-   
+    how_many_acres$avg_sprayable_acres[i] <- rowMeans(how_many_acres[i, 31:36])
  }
 
-how_many_acres <- how_many_acres[, -c(31:36)]
 
-write_csv(how_many_acres, "wettable_acres_output.csv")
+ how_many_acres <- how_many_acres[, -c(31:36)]
+ 
+ write_csv(how_many_acres, "wettable_acres_output.csv")
          
