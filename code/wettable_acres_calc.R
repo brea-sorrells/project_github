@@ -138,8 +138,8 @@ how_many_acres <- how_many_acres %>%
 
 
  for (i in 1:length(how_many_acres$min_sprayable_acres)){
-    how_many_acres$min_sprayable_acres[i] <- min(how_many_acres[i, 31:36], na.rm = TRUE)
-    how_many_acres$max_sprayable_acres[i] <- max(how_many_acres[i, 31:36], na.rm = TRUE)
+    how_many_acres$min_sprayable_acres[i] <- min(how_many_acres[i, 31:36])
+    how_many_acres$max_sprayable_acres[i] <- max(how_many_acres[i, 31:36])
    
  }
 
