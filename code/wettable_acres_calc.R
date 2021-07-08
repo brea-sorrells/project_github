@@ -9,20 +9,17 @@ library(lubridate)
 #Read in data files --------
 county <- read_csv("data/county_input_data.csv")
 crop <- read_csv("data/crop_n_input_data.csv")
-phase <- read_csv("data/phase_input_data.csv")
+phase <- read_csv("data/input_data_files - phase_input_data.csv")
 cafos <- read_csv("data/swine_cafos_info.csv")
 cat <- read_csv("data/input_data_files - category_input_data.csv")
 
-View(county)
-View(crop)
-View(phase)
-View(cafos)
 
 # Manure Calcs ---------
 
-wettable_acres <- cafos[, -c(3, 7:8, 11, 14, 15:16, 20:30)]
+wettable_acres <- cafos#[, -c(3, 7:8, 11, 14, 15:16, 20:30)]
 
-View(wettable_acres)
+
+
 wettable_acres$county <- tolower(wettable_acres$county)
 wettable_acres <- clean_names(wettable_acres)
 
@@ -30,6 +27,7 @@ wettable_acres <- clean_names(wettable_acres)
 wettable_acres <- left_join(wettable_acres, phase, by = c("regulated_activity" = "phase"))
 
 wettable_acres$manure_produced_gal_yr <- (wettable_acres$manure_produced_gal_yr)*wettable_acres$allowable_count
+
 
 wettable_acres <- wettable_acres %>%
   mutate("n_produced_lbs_yr" = ((manure_produced_gal_yr/1000)*manure_n_g_avg))
@@ -94,17 +92,59 @@ for (i in itera) {
 }
 
 
-View(county_avgs_l)
-
 
 # Combining w/nutrient info ---------
 county_crop_n <- left_join(county_avgs_l, cat, by = c("crop" = "grouping"))
-View(county_crop_n)
 
 county_crop_n <- county_crop_n %>%
   mutate("n_up_lb_acre_min" = avg_yield*min_uptake,
          "n_up_lb_acre_max" = avg_yield*max_uptake)
 
 county_crop_n
+
+
+county_join_crops <- county_crop_n[, -c(3, 5:6)]
+county_join_crops <- county_join_crops %>%
+  pivot_wider(names_from = "crop", values_from = c(n_up_lb_acre_min, n_up_lb_acre_max, total_spray_days))
+
+wettable_acres <- inner_join(wettable_acres, county_join_crops, by = "county")
+
+# Calculations -----------------
+wettable_acres <- wettable_acres %>%
+  mutate("manure_produced_gal_day" = manure_produced_gal_yr/365) %>%
+  mutate("n_produced_lbs_day" = n_produced_lbs_yr/365,
+         "n_up_br_max_day" = n_up_lb_acre_max_bermudagrass_rye/total_spray_days_bermudagrass_rye,
+         "n_up_br_min_day" = n_up_lb_acre_min_bermudagrass_rye/total_spray_days_bermudagrass_rye,
+         "n_up_cws_max_day" = n_up_lb_acre_max_corn_soybean_wheat/total_spray_days_corn_soybean_wheat,
+         "n_up_cws_min_day" = n_up_lb_acre_min_corn_soybean_wheat/total_spray_days_corn_soybean_wheat,
+         "n_up_tf_max_day" = n_up_lb_acre_max_tall_fescue/total_spray_days_tall_fescue,
+         "n_up_tf_min_day" = n_up_lb_acre_min_tall_fescue/total_spray_days_tall_fescue)
+
+wettable_acres <- wettable_acres %>%
+  mutate("acres_spray_day" = manure_produced_gal_day/27154,
+         "acres_br_max_day" = n_produced_lbs_day/n_up_br_max_day,
+         "acres_br_min_day" = n_produced_lbs_day/n_up_br_min_day,
+         "acres_cws_max_day" = n_produced_lbs_day/n_up_cws_max_day,
+         "acres_cws_min_day" = n_produced_lbs_day/n_up_cws_min_day,
+         "acres_tf_max_day" = n_produced_lbs_day/n_up_tf_max_day,
+         "acres_tf_min_day" = n_produced_lbs_day/n_up_tf_min_day)
+
+how_many_acres <- wettable_acres[, -c(31:51)]
+how_many_acres <- how_many_acres %>%
+  mutate("min_sprayable_acres" = NA,
+         "max_sprayable_acres" = NA,
+         "avg_sprayable_acres" = NA)
+
+
+ for (i in 1:length(how_many_acres$min_sprayable_acres)){
+    how_many_acres$min_sprayable_acres[i] <- min(how_many_acres[i, 31:36])
+    how_many_acres$max_sprayable_acres[i] <- max(how_many_acres[i, 31:36])
+    how_many_acres$avg_sprayable_acres[i] <- rowMeans(how_many_acres[i, 31:36])
+ }
+
+
+ how_many_acres <- how_many_acres[, -c(31:36)]
+ 
+ write_csv(how_many_acres, "wettable_acres_output.csv")
 
          
