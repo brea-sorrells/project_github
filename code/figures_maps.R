@@ -30,21 +30,25 @@ dat_huc12 <- dat %>%
 # individual farm scatterplots
 dat_county %>%
   ggplot(aes(x = allowable_count)) +
-  geom_point(aes(y = avg_sprayable_acres)) +
+  geom_point(aes(y = avg_sprayable_acres), alpha = 0.5, color = "slateblue3") +
   geom_errorbar(aes(y = avg_sprayable_acres,
                     ymin = min_sprayable_acres,
-                    ymax = max_sprayable_acres)) +
+                    ymax = max_sprayable_acres), alpha = 0.5, color = "slateblue3") +
   facet_wrap(~regulated_activity,
-             scales = "free")
+             scales = "free") +
+  labs(x = "Allowable Count (# Swine)",
+       y = "Wettable Acres (with error bars)")
 
 dat_huc6 %>%
   ggplot(aes(x = allowable_count, color = regulated_activity)) +
   geom_point(aes(y = avg_sprayable_acres)) +
-  geom_errorbar(aes(y = avg_sprayable_acres,
-                    ymin = min_sprayable_acres,
-                    ymax = max_sprayable_acres)) +
-  facet_wrap(~name,
-             scales = "free")
+  labs(x = "Allowable Count (# Swine)",
+       y = "Average Wettable Acres",
+       color = "")
+?labs
+ # geom_errorbar(aes(y = avg_sprayable_acres,
+                   # ymin = min_sprayable_acres,
+                  # ymax = max_sprayable_acres))
 
 #boxplots
 dat_huc6 %>%

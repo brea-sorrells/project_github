@@ -147,5 +147,5 @@ how_many_acres <- how_many_acres %>%
 
  how_many_acres <- how_many_acres[, -c(31:36)]
  
- write_csv(how_many_acres, "wettable_acres_output.csv")
+ write_csv(how_many_acres, "outputs/wettable_acres_output.csv")
          
