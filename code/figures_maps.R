@@ -41,10 +41,11 @@ dat_county %>%
 
 dat_huc6 %>%
   ggplot(aes(x = allowable_count, color = regulated_activity)) +
-  geom_point(aes(y = avg_sprayable_acres)) +
+  geom_point(aes(y = avg_sprayable_acres), alpha = 0.5) +
   labs(x = "Allowable Count (# Swine)",
        y = "Average Wettable Acres",
-       color = "")
+       color = "") +
+  scale_color_brewer(palette = "Paired")
 ?labs
  # geom_errorbar(aes(y = avg_sprayable_acres,
                    # ymin = min_sprayable_acres,

@@ -19,6 +19,7 @@ cat <- read_csv("data/input_data_files - category_input_data.csv")
 wettable_acres <- cafos#[, -c(3, 7:8, 11, 14, 15:16, 20:30)]
 
 
+
 wettable_acres$county <- tolower(wettable_acres$county)
 wettable_acres <- clean_names(wettable_acres)
 
@@ -26,7 +27,6 @@ wettable_acres <- clean_names(wettable_acres)
 wettable_acres <- left_join(wettable_acres, phase, by = c("regulated_activity" = "phase"))
 
 wettable_acres$manure_produced_gal_yr <- (wettable_acres$manure_produced_gal_yr)*wettable_acres$allowable_count
-### Amount per year?
 
 
 wettable_acres <- wettable_acres %>%
@@ -93,17 +93,15 @@ for (i in itera) {
 
 
 
-
-
 # Combining w/nutrient info ---------
 county_crop_n <- left_join(county_avgs_l, cat, by = c("crop" = "grouping"))
-
 
 county_crop_n <- county_crop_n %>%
   mutate("n_up_lb_acre_min" = avg_yield*min_uptake,
          "n_up_lb_acre_max" = avg_yield*max_uptake)
 
 county_crop_n
+
 
 county_join_crops <- county_crop_n[, -c(3, 5:6)]
 county_join_crops <- county_join_crops %>%
@@ -147,5 +145,10 @@ how_many_acres <- how_many_acres %>%
 
  how_many_acres <- how_many_acres[, -c(31:36)]
  
+<<<<<<< HEAD
  write_csv(how_many_acres, "outputs/wettable_acres_output.csv")
+=======
+ write_csv(how_many_acres, "wettable_acres_output.csv")
+
+>>>>>>> c90d8980ae7731e9d9823ac70311e45abab1b0f9
          
