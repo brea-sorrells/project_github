@@ -31,12 +31,12 @@ ggplot(counties, aes()) +
 
 
 # county
-dat <- dat %>%
+datc <- dat %>%
   filter(boundary == "county")
 
-dat_spatial <- st_as_sf(dat, coords = c("lon", "lat"), crs = 4269)
+dat_spatial <- st_as_sf(datc, coords = c("lon", "lat"), crs = 4269)
 
-dat_sums <- dat %>%
+dat_sums <- datc %>%
   group_by(name) %>%
   summarise("sum" = sum(avg_sprayable_acres, na.rm = TRUE))
 
@@ -81,14 +81,29 @@ huc12_sums$sum
 
 
 # Plots
+dat_spatial <- dat_spatial %>%
+  filter(regulated_operation == "Swine",
+         regulated_activity != "Swine - Gilts",
+         regulated_activity != "Swine - Other")
+
 ggplot() +
   geom_sf(data = counties) +
   geom_sf(data = dat_spatial, aes(color = regulated_activity),
-          alpha = 0.5) +
+          alpha = 0.5, size = 2) +
   theme_bw() +
   annotation_scale(location = "bl") +
   labs(color = "") +
-  scale_color_brewer(palette = "Paired")
+  scale_color_viridis_d() 
+
+ggplot() +
+  geom_sf(data = counties) +
+  geom_sf(data = dat_spatial,
+          alpha = 0.5, color = "blue4", size = 1.3) +
+  theme_bw(base_size = 26) +
+  theme(strip.background = element_rect(fill = "mediumaquamarine")) +
+  annotation_scale(location = "bl") +
+  labs(color = "") +
+  facet_wrap(~ regulated_activity)
 
 ggplot(counties_sums, aes(fill = sum)) +
   geom_sf() +
@@ -105,9 +120,12 @@ ggplot(counties_sums, aes(fill = wettable_acres_ratio)) +
   labs(title = "Ratio of Wettable Acres to County Area",
        fill = "")
 
+which.max(counties_sums$wettable_acres_ratio)
+counties_sums[85,]
+
 ggplot(counties_sums, aes(fill = wettable_acres_ratio)) +
   geom_sf() +
-  theme_bw() +
+  theme_bw(base_size = 22) +
   annotation_scale(location = "bl") +
   annotation_north_arrow(location =  "br", height = unit(1, "cm"), 
                          width = unit(1, "cm"), style = north_arrow_fancy_orienteering()) +
@@ -118,7 +136,7 @@ ggplot(counties_sums, aes(fill = wettable_acres_ratio)) +
 
 ggplot(huc6_sums, aes(fill = wettable_acres_ratio)) +
   geom_sf() +
-  theme_bw() +
+  theme_bw(base_size = 22) +
   annotation_scale(location = "bl") +
   annotation_north_arrow(location =  "br", height = unit(1, "cm"), 
                          width = unit(1, "cm"), style = north_arrow_fancy_orienteering()) +
@@ -126,13 +144,18 @@ ggplot(huc6_sums, aes(fill = wettable_acres_ratio)) +
   labs(title = "Ratio of Wettable Acres to HUC 6 Watershed Area",
        fill = "")
 
+which.max(huc6_sums$wettable_acres_ratio)
+huc6_sums[4, 20]
 
 ggplot(huc12_sums, aes(fill = wettable_acres_ratio)) +
   geom_sf() +
-  theme_bw() +
+  theme_bw(base_size = 22) +
   annotation_scale(location = "bl") +
   annotation_north_arrow(location =  "br", height = unit(1, "cm"), 
                          width = unit(1, "cm"), style = north_arrow_fancy_orienteering()) +
-  scale_fill_viridis_c() +
+  scale_fill_viridis_c(trans = "sqrt") +
   labs(title = "Ratio of Wettable Acres to HUC 12 Watershed Area",
        fill = "")
+
+which.max(huc12_sums$wettable_acres_ratio)
+huc12_sums[167, 25]
