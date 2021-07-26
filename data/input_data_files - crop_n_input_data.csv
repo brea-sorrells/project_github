@@ -1,7 +1,0 @@
-crop_type,min_bnf_rate,max_bnf_rate,uptake_unit,min_uptake,max_uptake,plant_date,harvest_date,spray_begin,grouping
-wheat,0,0,lb N/bu,1.7,2.4,1015,630,915,3
-rye ,0,0,lb N/bu,1.7,2.4,107,77,97,1
-corn,0,0,lb N/ton,10,12,410,107,310,3
-soybean,0.066,0.066,lb N/bu,3.5,4,520,123,420,3
-bermudagrass,0.015,0.015,lb N/ton,40,50,31,1117,21,1
-tall fescue,0.015,0.015,lb N/ton,40,50,91,430,81,2
