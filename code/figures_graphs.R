@@ -1,23 +1,19 @@
-# Figures and other outputs
+## Figures and graphs (non-spatial)
+## Last Edited 27 July 2021
+## Brea Sorrells & Anjel Iriaghomo
 
-#Libraries
+## Libraries -------------
 library(tidyverse)
 library(janitor)
 
-# Next Steps
-# add av, max, min of overall 3 scenarios, use for the next steps
-# Make Graphs
-#REMEMBER EACH FARM ATM HAS 3 ENTRIES
-# Combine w/ the total Cafos doc somehow, then export, make graphs in a new folder.
-# total wettable acres per county& watershed
-
-#data file
-dat <- read_csv("wettable_acres_output.csv")
+## Reading data file ---------
+dat <- read_csv("outputs/wettable_acres_output.csv")
 dat <- dat %>%
   filter(regulated_operation == "Swine",
          regulated_activity != "Swine - Gilts",
          regulated_activity != "Swine - Other")
 
+# Creating separate data frames for each boundary type
 dat_county <- dat %>%
   filter(boundary == "county")
 
@@ -27,7 +23,7 @@ dat_huc6 <- dat %>%
 dat_huc12 <- dat %>%
   filter(boundary == "HUC12")
 
-
+# Creating sums for each area
 dat_county_sums <- dat_county %>%
   group_by(name) %>%
   summarise(sum = sum(avg_sprayable_acres))
@@ -40,7 +36,9 @@ dat_12_sums <- dat_huc12 %>%
   group_by(name) %>%
   summarise(sum = sum(avg_sprayable_acres))
 
-# individual farm scatterplots
+## Individual farm scatterplots ---------------
+
+# Wettable acres vs Allowable Count w/error bars, faceted by phase
 dat_county %>%
   ggplot(aes(x = allowable_count)) +
   geom_errorbar(aes(y = avg_sprayable_acres,
@@ -55,8 +53,7 @@ dat_county %>%
   theme_bw(base_size = 26) +
   theme(strip.background = element_rect(fill = "mediumaquamarine"))
 
-?theme
-
+# Avg Wettable Acres vs allowable count
 dat_huc6 %>%
   ggplot(aes(x = allowable_count)) +
   geom_point(aes(y = avg_sprayable_acres, fill = regulated_activity), alpha = 0.5,
@@ -66,29 +63,26 @@ dat_huc6 %>%
        fill = "") +
   scale_fill_viridis_d(end = 0.9) +
   theme_bw(base_size = 30)
-?geom_point
 
-?scale_color_viridis_d
 
- # geom_errorbar(aes(y = avg_sprayable_acres,
-                   # ymin = min_sprayable_acres,
-                  # ymax = max_sprayable_acres))
+## Boxplots ---------------
 
-#boxplots
+# Each phase, avg sprayable acres
 dat_huc6 %>%
   ggplot(aes(x = regulated_activity, y = avg_sprayable_acres)) +
   geom_boxplot()
 
 
-#bar Graphs
+## Bar Graphs -------------
+#Need to create this to put error bars on the bar graph correctly
 sum_by_huc6 <- dat_huc6 %>%
   group_by(name) %>%
   summarise("summin" = sum(min_sprayable_acres),
             "summax" = sum(max_sprayable_acres))
-
 dat6_w_ranges <-
   inner_join(dat_huc6, sum_by_huc6, by = "name")
 
+# Huc6 location vs the number of acres included
   dat6_w_ranges %>% ggplot(aes(x = name, y = avg_sprayable_acres)) +
   geom_col(aes(fill = regulated_activity)) +
   geom_errorbar(aes(ymin = summin,
