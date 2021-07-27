@@ -1,6 +1,6 @@
 phase_input_data,,,,,
 manure_produced_gal_yr,in gallons/year/animal,,,,
-manure_n_g_avg,in kg/1000 gallons,,,,
+manure_n_g_avg,in lbs/1000 gallons,,,,
 ,Type B Animal Waste Training Manual 12_16.pdf,,,,
 Volatilization from https://files.nc.gov/ncdeq/Air%20Quality/inventory/industry/animal/rpt_200208.pdf,,,,in kg N/head/year,
 additional resource: https://nrcca.cals.cornell.edu/nutrient/CA6/CA0654.php,,,,,
@@ -24,4 +24,3 @@ slope data using,,,,,
 depth data estimated using  https://www.yakimacounty.us/DocumentCenter/View/13596/ham2002-kansas-lagoon-leakage-study?bidId=,,,,, in meters
 liner depth using,https://www.nrcs.usda.gov/wps/PA_NRCSConsumption/download?cid=nrcseprd1051808&ext=pdf,,,,in inches
 hydraulic conductivity estimated using,,https://www.yakimacounty.us/DocumentCenter/View/13596/ham2002-kansas-lagoon-leakage-study?bidId=,,,in cm/s
-,"* Not sure if there's a better way to do this, there should be?",,,,
