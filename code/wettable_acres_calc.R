@@ -36,7 +36,9 @@ wettable_acres$manure_produced_gal_yr <- (wettable_acres$manure_produced_gal_yr)
 # Calculating N produced for manure gallons
 wettable_acres <- wettable_acres %>%
   mutate("n_produced_lbs_yr" = ((manure_produced_gal_yr/1000)*manure_n_g_avg))
-
+          # *0.6 times manure_n_g_avg
+          # Added (very) late in the process after noticing the conversion factor
+  
 
 ## Filling in crop yield NAs ----------
 # Finding group averages
